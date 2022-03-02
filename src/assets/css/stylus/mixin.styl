@@ -1,0 +1,13 @@
+// 实现 移动端的 1像素
+// 定义一个函数，传入变量$color;
+border-1px($color)
+    // 定义css代码
+    position relative
+    &::after
+        content ''
+        display block
+        position absolute
+        width 100%
+        left 0
+        bottom 0
+        border-top 1px solid $color

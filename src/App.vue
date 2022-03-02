@@ -1,16 +1,63 @@
 <template>
   <div id="app">
+    <!--  不可以使用header作为组件标签名
+      因为h5存在原生标签header标签，可能会混淆导致报错（解析时认为已经注册的组件没有使用时会报错） -->
+    <Header />
+    <!-- tab -->
+    <div class="tab mobile_border-1px">
+      <div class="tab-item">
+        <!-- 声明式导航 必须带有to属性 -->
+        <router-link class="tab-item-content" to='/goods'> 商品 </router-link>
+      </div>
+      <div class="tab-item">
+        <router-link class="tab-item-content" to='/ratings'> 评价 </router-link>
+      </div>
+      <div class="tab-item">
+        <router-link class="tab-item-content" to='/seller'> 商家 </router-link>
+      </div>
+    </div>
+    <!-- 商品内容区 -->
+    <div class="content">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
+import Header from 'components/header/Header.vue';
 
 export default {
   name: 'App',
   components: {
+    Header
   }
-}
+};
 </script>
 
-<style>
+<style lang="stylus" scoped>
+@import './assets/css/stylus/mixin.styl';
+
+#app
+  .tab
+    display: flex;
+    width: 100%;
+    // 标注中的高度为80，但是移动端的设计一般是按照2倍的大小去设计的，（这里是按照iPhone6,设备独立像素？是375，物理像素(又称设备像素)是750，dpr是2）所以尺寸也是按照2倍大小标注的
+    // dpr设备像素比：devicePixelRatio
+    // 设备像素(device independent pixels): 设备屏幕的【物理像素】
+    // 设备独立像素（Device Independent Pixel）：与设备无关的逻辑像素，代表可以通过程序控制使用的虚拟像素，是一个总体概念，【包括了CSS像素】
+    // CSS像素（CSS Pixel）:指的是我们在样式代码中使用到的逻辑像素
+    height: 40px;
+    line-height: 40px;
+    // 1px的实现：结合伪类和缩放实现（mixin.styl和base.styl）
+    border-1px(rgba(7, 17, 27, 0.1))
+
+    .tab-item
+      flex: 1;
+      text-align: center;
+      &-content
+        display: block
+        font-size: 14px
+        color: rgb(77, 85, 93)
+      .active
+        color: rgb(240, 20, 20)
 </style>
