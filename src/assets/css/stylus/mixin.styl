@@ -1,13 +1,19 @@
 // 实现 移动端的 1像素
 // 定义一个函数，传入变量$color;
 border-1px($color)
-    // 定义css代码
-    position relative
-    &::after
-        content ''
-        display block
-        position absolute
-        width 100%
-        left 0
-        bottom 0
-        border-top 1px solid $color
+  // 定义css代码
+  position relative
+  &::after
+    content ''
+    display block
+    position absolute
+    width 100%
+    left 0
+    bottom 0
+    border-top 1px solid $color
+// 实现图片 2x和3x 的选择
+// 定义一个函数，传入变量$url
+bg-image($url)
+  background-image url($url + '@2x.png')
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3)
+    background-image url($url + '@3x.png')
