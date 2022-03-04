@@ -38,39 +38,41 @@
       <div class="background">
         <img :src="sellerInfo.avatar" width="100%" height="100%">
       </div>
-      <div class="seller-detail" v-show="showSellerDetailShow">
-      <!-- <div class="seller-detail" v-show="showSellerDetailShow" transition="fade"> -->
-        <div class="seller-detail-wrapper clearfix">
-          <div class="seller-detail-wrapper-main">
-            <h1 class="seller-name"> {{sellerInfo.name}} </h1>
-            <div class="star-wrapper">
-              <star :size="48" :score="sellerInfo.score"></star>
-            </div>
-            <div class="title">
-              <div class="line"></div>
-              <div class="text">优惠信息</div>
-              <div class="line"></div>
-            </div>
-            <ul class="support-list" v-if="sellerInfo.supports">
-              <li class="support-item" v-for="item in sellerInfo.supports" :key="item.type">
-                <span class="icon" :class = "classMap[item.type]"></span>
-                <span class="text"> {{item.description}} </span>
-              </li>
-            </ul>
-            <div class="title">
-              <div class="line"></div>
-              <div class="text">商家公告</div>
-              <div class="line"></div>
-            </div>
-            <div class="bulletin-content-wrapper">
-              <p class="bulletin-content"> {{sellerInfo.bulletin}} </p>
+      <transition name="fade">
+        <div class="seller-detail" v-show="showSellerDetailShow">
+        <!-- <div class="seller-detail" v-show="showSellerDetailShow" transition="fade"> -->
+          <div class="seller-detail-wrapper clearfix">
+            <div class="seller-detail-wrapper-main">
+              <h1 class="seller-name"> {{sellerInfo.name}} </h1>
+              <div class="star-wrapper">
+                <star :size="48" :score="sellerInfo.score"></star>
+              </div>
+              <div class="title">
+                <div class="line"></div>
+                <div class="text">优惠信息</div>
+                <div class="line"></div>
+              </div>
+              <ul class="support-list" v-if="sellerInfo.supports">
+                <li class="support-item" v-for="item in sellerInfo.supports" :key="item.type">
+                  <span class="icon" :class = "classMap[item.type]"></span>
+                  <span class="text"> {{item.description}} </span>
+                </li>
+              </ul>
+              <div class="title">
+                <div class="line"></div>
+                <div class="text">商家公告</div>
+                <div class="line"></div>
+              </div>
+              <div class="bulletin-content-wrapper">
+                <p class="bulletin-content"> {{sellerInfo.bulletin}} </p>
+              </div>
             </div>
           </div>
+          <div class="seller-detail-close" @click="hideSellerDetailShow">
+            <i class="icon-close"></i>
+          </div>
         </div>
-        <div class="seller-detail-close" @click="hideSellerDetailShow">
-          <i class="icon-close"></i>
-        </div>
-      </div>
+      </transition>
   </div>
 </template>
 
@@ -236,13 +238,13 @@ export default {
     height: 100%
     overflow: auto
     background-color: rgba(7, 17, 27, 0.8)
-    // transition: all 0.3s
-    // &.fade-transition
-    //   opacity: 1
-    //   background: rgba(7, 17, 27, 0.8)
-    // &.fade-enter, &.fade-leave
-    //   opacity: 0
-    //   background: rgba(7, 17, 27, 0)
+    &.fade-enter-active, &.fade-leave-active
+      opacity: 1
+      background: rgba(7, 17, 27, 0.8)
+      transition: all 0.3s
+    &.fade-enter, &.fade-leave-active
+      opacity: 0
+      background: rgba(7, 17, 27, 0)
     &-wrapper
       width: 100%
       min-height: 100%

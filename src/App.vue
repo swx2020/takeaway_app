@@ -32,7 +32,8 @@
     </div>
     <!-- 商品内容区 -->
     <div class="content">
-      <router-view></router-view>
+      <!-- 将 seller传入 -->
+      <router-view :seller="seller"></router-view>
     </div>
   </div>
 </template>
