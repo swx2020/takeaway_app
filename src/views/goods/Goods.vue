@@ -1,5 +1,6 @@
 <template>
   <div id="goods">
+    <!-- 菜单导航 -->
     <div
       class="menu-wrapper"
       ref="menu"
@@ -12,8 +13,8 @@
           :key="index"
           @click="toggleGoods(index, $event)"
         >
-        <!-- better-scroll 默认会阻止【移动端】浏览器的原生 click 事件!需手动设置click:true ；不会阻止PC端-->
-        <!-- :class="{'current': currentIndex === index}" 三目运算符？？？符合条件就是 存在类名current -->
+          <!-- better-scroll 默认会阻止【移动端】浏览器的原生 click 事件!需手动设置click:true ；不会阻止PC端-->
+          <!-- :class="{'current': currentIndex === index}" 三目运算符？？？符合条件就是 存在类名current -->
           <span class="text mobile_border-1px">
             <span
               class="icon"
@@ -25,6 +26,7 @@
         </li>
       </ul>
     </div>
+    <!-- 商品列表 -->
     <div
       class="goods-wrapper"
       ref="goods"
@@ -42,7 +44,9 @@
               class="foods-item  mobile_border-1px"
               v-for="(food,index1) in item.foods"
               :key="index1"
+              @click="selectGood(food,$event)"
             >
+            <!-- 在 ref="goods-item-hook" 内部，即在better-scroll作用范围内，所以仍要传递一个$event-->
               <div class="food-icon">
                 <img
                   width="57"
@@ -58,19 +62,29 @@
                   <span>好评率{{ food.rating }}%</span>
                 </div>
                 <div class="price">
-                  <span class="new-price"> ￥{{ food.price }} </span>
-                  <span
+                  <span class="new-price"> ¥{{ food.price }} </span><span
                     class="old-price"
                     v-show="food.oldPrice"
-                  > ￥{{ food.oldPrice }} </span>
+                  > ¥{{ food.oldPrice }} </span>
                 </div>
+              </div>
+              <!-- 右：添加商品按钮 -->
+              <div class="cart-control-wrapper">
+                <cart-control :food="food"></cart-control>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-    <cart :delivery-fee="seller.deliveryPrice" :min-price="seller.minPrice"></cart>
+    <!-- 点击商品进入详情页 -->
+    <good-detail :good="goodSelected" ref="good-detail"></good-detail>
+    <!-- 底部购物车 -->
+    <cart
+      :select-goods="selectGoods"
+      :delivery-fee="seller.deliveryPrice"
+      :min-price="seller.minPrice"
+    ></cart>
   </div>
 </template>
 
@@ -79,6 +93,8 @@
 import BScroll from 'better-scroll';
 // 引入组件
 import Cart from 'components/cart/Cart.vue';
+import CartControl from 'components/cartControl/CartControl.vue';
+import GoodDetail from 'components/good-detail/GoodDetail.vue';
 
 const ERR_OK = 0;
 
@@ -90,14 +106,20 @@ export default {
     }
   },
   components: {
-    Cart
+    Cart,
+    CartControl,
+    GoodDetail
   },
   data() {
     return {
+      // 商品信息
       goods: [],
       listHeight: [],
       // scrollY 存储的是【商品列表】 【滚动时】的滚动高度
-      scrollY: 0
+      scrollY: 0,
+      // 用户选择并点击商品，进入商品详情页
+      // 函数方法名与data中的属性名不能相同！！！！
+      goodSelected: {}
     };
   },
   computed: {
@@ -113,6 +135,17 @@ export default {
       }
       // 如果listHeight为空就返回0。即currentIndex为0
       return 0;
+    },
+    selectGoods() {
+      const foods = [];
+      this.goods.forEach((good) => {
+        good.foods.forEach((food) => {
+          if (food.count) {
+            foods.push(food);
+          }
+        });
+      });
+      return foods;
     }
   },
   created() {
@@ -143,6 +176,15 @@ export default {
   //   });
   // },
   methods: {
+    selectGood(food, event) {
+      if (!event._constructed) {
+        return;
+      }
+      this.goodSelected = food;
+      // 调用子组件方法
+      // console.log(this.$refs['good-detail']);
+      this.$refs['good-detail'].show();
+    },
     toggleGoods(index, event) {
       // 传递过来的event就是这个点击事件
       // 但 better-scroll 的点击事件 与 原生的点击事件有区别： 即better-scroll的点击事件带有一个_constructed, 而原生的点击事件没有
@@ -164,6 +206,7 @@ export default {
       console.log(this.$refs.menu);
 
       this.goodsScroll = new BScroll(this.$refs.goods, {
+        click: true,
         // 作用：滚动时实时告知滚动的位置
         probeType: 3
       });
@@ -213,7 +256,7 @@ export default {
         position relative
         margin-top -1px
         background-color #fff
-        font-weight: 700
+        font-weight 700
         .text
           border-none()
       .icon
@@ -267,32 +310,36 @@ export default {
         margin-right 10px
       .food-info
         flex 1
-      .food-name
-        margin 2px 0 8px
-        height 14px
-        line-height 14px
-        font-size 14px
-        color rgb(7, 17, 27)
-      .food-desc
-        margin-bottom 8px
-        line-height 12px
-        font-size 10px
-        color rgb(147, 153, 159)
-      .extra
-        line-height 10px
-        font-size 10px
-        color rgb(147, 153, 159)
-        .count
-          margin-right 12px
-      .price
-        font-weight 700
-        line-height 24px
-        .new-price
-          margin-right 8px
+        .food-name
+          margin 2px 0 8px
+          height 14px
+          line-height 14px
           font-size 14px
-          color rgb(240, 20, 20)
-        .old-price
-          text-decoration line-through
+          color rgb(7, 17, 27)
+        .food-desc
+          margin-bottom 8px
+          line-height 12px
           font-size 10px
           color rgb(147, 153, 159)
+        .extra
+          line-height 10px
+          font-size 10px
+          color rgb(147, 153, 159)
+          .count
+            margin-right 12px
+        .price
+          font-weight 700
+          line-height 24px
+          .new-price
+            margin-right 8px
+            font-size 14px
+            color rgb(240, 20, 20)
+          .old-price
+            text-decoration line-through
+            font-size 10px
+            color rgb(147, 153, 159)
+      .cart-control-wrapper
+        position absolute
+        right 0
+        bottom 12px
 </style>
