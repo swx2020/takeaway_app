@@ -198,12 +198,16 @@ export default {
       const el = goodList[index];
       // 调用better-scroll的接口scrollToElement()
       this.goodsScroll.scrollToElement(el, 300);
+      // 第一次点击了精选热菜这个导航栏，然后计算对应的li列表的位置并滚动到对应位置，那下次再次点击到这个导航栏时。还要计算吗
+      // 如果需要的话，是不是可以存储起来，下次使用的时候直接使用存储起来的数据
+      // 初步想法：每次点击并滚动后，将index与el对应的高度存储在一个对象中（键值对），下次再次点击相同的导航栏，就使用对象中的数据
     },
     _initScroll() {
       this.menuScroll = new BScroll(this.$refs.menu, {
         click: true
       });
-      console.log(this.$refs.menu);
+      // console.log(this.$refs.menu);
+      // console.log('滚动1');
 
       this.goodsScroll = new BScroll(this.$refs.goods, {
         click: true,
@@ -218,7 +222,7 @@ export default {
     _calHeight() {
       // console.log(this.$refs['goods-item-hook']);
       const goodList = this.$refs['goods-item-hook'];
-      console.log(goodList);
+      // console.log(goodList);
       let height = 0;
       this.listHeight.push(height);
       for (let i = 0; i < goodList.length; i++) {

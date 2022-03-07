@@ -32,8 +32,11 @@
     </div>
     <!-- 商品内容区 -->
     <div class="content">
-      <!-- 将 seller传入 -->
       <router-view :seller="seller"></router-view>
+      <!-- <keep-alive>
+        <!- - 将 seller传入 - ->
+        <router-view :seller="seller" v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive> -->
     </div>
   </div>
 </template>

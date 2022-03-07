@@ -14,7 +14,10 @@ const routes = [
   },
   {
     path: '/goods',
-    component: Goods
+    component: Goods,
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/ratings',
