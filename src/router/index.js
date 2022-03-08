@@ -21,11 +21,17 @@ const routes = [
   },
   {
     path: '/ratings',
-    component: Ratings
+    component: Ratings,
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/seller',
-    component: Seller
+    component: Seller,
+    meta: {
+      keepAlive: true
+    }
   }
 ];
 

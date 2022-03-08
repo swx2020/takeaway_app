@@ -123,7 +123,7 @@ export default {
       // 选择评价的类型
       selectType: ALL,
       // 是否展示有内容的评价
-      onlyContent: true,
+      onlyContent: false,
       // 具体评价类型
       desc: {
         all: '全部',

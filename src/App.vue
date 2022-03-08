@@ -32,16 +32,21 @@
     </div>
     <!-- 商品内容区 -->
     <div class="content">
-      <router-view :seller="seller"></router-view>
-      <!-- <keep-alive>
-        <!- - 将 seller传入 - ->
+      <!-- <router-view :seller="seller"></router-view> -->
+      <!-- 使用keep-alive可以减少请求的次数
+        将组件的状态都缓存到内存里
+        切换router时，如果组件已经保存在内存，就直接从内存中恢复
+       -->
+      <keep-alive>
+        <!-- 将 seller传入 -->
         <router-view :seller="seller" v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive> -->
+      </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
+import { urlParse } from 'assets/js/util.js';
 import Header from 'components/header/Header.vue';
 
 const ERR_OK = 0;
@@ -50,22 +55,29 @@ export default {
   // 由于组件是可以被复用的，如果data是一个对象，会导致修改一个组件时，另一个组件也会被修改；而函数则不会
   data() {
     return {
-      seller: {}
+      seller: {
+        id: (() => {
+          const queryParam = urlParse();
+          return queryParam.id;
+        })()
+      }
     };
   },
   components: {
     Header
   },
   created() {
-    this.$http.get('/api/seller').then((response) => {
+    this.$http.get('/api/seller?id=' + this.seller.id).then((response) => {
       // 成功时的回调
       response = response.body;
       if (response.errno === ERR_OK) {
-        this.seller = response.data;
-        console.log(this.seller);
+        // this.seller = response.data;
+        // 相当于 extend方法 扩展  es6语法   vue推荐的给对象扩展属性方法
+        this.seller = Object.assign({}, this.seller, response.data);
       }
     });
-  }
+  },
+  methods: {}
 };
 </script>
 
