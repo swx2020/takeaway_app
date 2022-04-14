@@ -1,6 +1,4 @@
 // vue2对应vuex3（版本对应）
-// 共享的数据：总价格totalPrice、购物车中的商品cart_goods
-// 请求的数据？？？？QAQ
 
 import Vue from 'vue';
 import Vuex from 'vuex';
