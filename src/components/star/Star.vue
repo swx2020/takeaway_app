@@ -51,7 +51,7 @@ export default {
       while (result.length < LEN) {
         result.push(CLASS_OFF);
       }
-      console.log(result);
+      // console.log(result);
       return result;
     }
   }

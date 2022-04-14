@@ -177,9 +177,11 @@ export default {
       // 55555555一晚上！！！一晚上结果是ref加错了位置！！！！！哭死了！！！！
       // console.log('click');
       if (!this.good.count) {
-        this.$root.$set(this.good, 'count', 1);
+        this.$set(this.good, 'count', 1);
         console.log(this.good.count);
         // console.log(this.$root);
+        // // 更新vuex中的 cart_goods
+        this.$store.commit('addGoodToCart', this.good);
       }
       // console.log(this.$root);
     },

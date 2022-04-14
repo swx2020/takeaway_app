@@ -7,6 +7,8 @@ import App from './App.vue';
 import './assets/css/reset.css';
 import './assets/css/stylus/index.styl';
 
+import store from './store/index.js';
+
 Vue.config.productionTip = false;
 // 注册！
 Vue.use(VueResource);
@@ -15,5 +17,6 @@ Vue.use(VueResource);
 new Vue({
   // 注册挂载！
   router,
+  store,
   render: (h) => h(App)
 }).$mount('#app');

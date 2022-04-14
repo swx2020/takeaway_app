@@ -8,17 +8,17 @@
         <div class="logo-wrapper">
           <div
             class="logo"
-            :class="{'highlight': totalCount > 0}"
+            :class="{'highlight': cart_num > 0}"
           >
             <i
               class="icon-shopping_cart"
-              :class="{'highlight': totalCount > 0}"
+              :class="{'highlight': cart_num > 0}"
             ></i>
           </div>
           <div
             class="num"
-            v-show="totalCount"
-          >{{ totalCount }}</div>
+            v-show="cart_num"
+          >{{ cart_num }}</div>
         </div>
         <div
           class="price"
@@ -60,7 +60,7 @@
           <ul>
             <li
               class="cart-item"
-              v-for="(item, index) in selectGoods"
+              v-for="(item, index) in cart_goods"
               :key="index"
             >
               <span class="name"> {{item.name}} </span>
@@ -109,19 +109,21 @@
 </template>
 
 <script>
+// 导入vuex
+import { mapGetters, mapState } from 'vuex';
 // 引入 better-scroll
 import BScroll from 'better-scroll';
 import CartControl from '../cartControl/CartControl.vue';
 export default {
   name: 'Cart',
   props: {
-    selectGoods: {
-      type: Array,
-      // vue中props类型为ARRAY或OBJECT时，默认值为工厂函数形式
-      default() {
-        return [];
-      }
-    },
+    // selectGoods: {
+    //   type: Array,
+    //   // vue中props类型为ARRAY或OBJECT时，默认值为工厂函数形式
+    //   default() {
+    //     return [];
+    //   }
+    // },
     // deliveryFee 在Goods组件中一般转换为 短横杠连接的方式,即 delivery-fee
     // 所以Goods组件中具体传值为  :delivery-fee="seller.deliveryPrice"
     deliveryFee: {
@@ -161,20 +163,22 @@ export default {
     CartControl
   },
   computed: {
-    totalPrice() {
-      let total = 0;
-      this.selectGoods.forEach((food) => {
-        total += food.price * food.count;
-      });
-      return total;
-    },
-    totalCount() {
-      let count = 0;
-      this.selectGoods.forEach((food) => {
-        count += food.count;
-      });
-      return count;
-    },
+    ...mapState(['cart_goods']),
+    ...mapGetters(['totalPrice', 'cart_num']),
+    // totalPrice() {
+    //   let total = 0;
+    //   this.selectGoods.forEach((food) => {
+    //     total += food.price * food.count;
+    //   });
+    //   return total;
+    // },
+    // totalCount() {
+    //   let count = 0;
+    //   this.selectGoods.forEach((food) => {
+    //     count += food.count;
+    //   });
+    //   return count;
+    // },
     payDesc() {
       if (this.totalPrice === 0) {
         return `¥${this.minPrice}起送`;
@@ -198,7 +202,7 @@ export default {
       // //            （即使有商品加入，也不应该立即更改为true，而是给用户来选择是否打开）
       // return this.show;
       get() {
-        return !this.totalCount ? false : this.show;
+        return !this.cart_num ? false : this.show;
       },
       set() {}
     }
@@ -210,7 +214,7 @@ export default {
       //  为什么用  this.showCartList = false; 无效？？？？
     },
     toggleCartList() {
-      if (!this.totalCount) {
+      if (!this.cart_num) {
         return;
       }
       this.show = !this.show;
@@ -228,10 +232,12 @@ export default {
       }
     },
     cleanGoods() {
+      // 触发vuex中的mutations:
+      this.$store.commit('cleanCartGoods');
       // 遍历数组selectGoods，【 思路重点 --> 将每个商品的count都置为 0 】
-      this.selectGoods.forEach((good) => {
-        good.count = 0;
-      });
+      // this.selectGoods.forEach((good) => {
+      //   good.count = 0;
+      // });
       // 清空后，由于count为0，所以showCartList变为false；但是data中show的值并没有发生变化！
       // 如果 这里不设置this.show = false; 会导致 再次添加商品到购物车 时，由于show仍为true，使得 showCartList计算属性返回 this.show=ture, 从而导致购物车列表自动打开！
       this.show = false;
@@ -246,6 +252,9 @@ export default {
       if (this.totalPrice < this.minPrice) {
         return;
       }
+      // 将购物车列表隐藏
+      this.show = false;
+      // 跳转到支付页面
       window.alert(`支付${this.totalPrice}`);
     }
   }

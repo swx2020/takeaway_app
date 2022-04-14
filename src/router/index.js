@@ -14,24 +14,18 @@ const routes = [
   },
   {
     path: '/goods',
-    component: Goods,
-    meta: {
-      keepAlive: true
-    }
+    name: 'Goods',
+    component: Goods
   },
   {
     path: '/ratings',
-    component: Ratings,
-    meta: {
-      keepAlive: true
-    }
+    name: 'Ratings',
+    component: Ratings
   },
   {
     path: '/seller',
-    component: Seller,
-    meta: {
-      keepAlive: true
-    }
+    name: 'Seller',
+    component: Seller
   }
 ];
 

@@ -46,7 +46,7 @@
               :key="index1"
               @click="selectGood(food,$event)"
             >
-            <!-- 在 ref="goods-item-hook" 内部，即在better-scroll作用范围内，所以仍要传递一个$event-->
+              <!-- 在 ref="goods-item-hook" 内部，即在better-scroll作用范围内，所以仍要传递一个$event-->
               <div class="food-icon">
                 <img
                   width="57"
@@ -78,10 +78,12 @@
       </ul>
     </div>
     <!-- 点击商品进入详情页 -->
-    <good-detail :good="goodSelected" ref="good-detail"></good-detail>
+    <good-detail
+      :good="goodSelected"
+      ref="good-detail"
+    ></good-detail>
     <!-- 底部购物车 -->
     <cart
-      :select-goods="selectGoods"
       :delivery-fee="seller.deliveryPrice"
       :min-price="seller.minPrice"
     ></cart>
@@ -89,6 +91,7 @@
 </template>
 
 <script>
+// import { mapState, mapActions } from 'vuex';
 // 引入 better-scroll
 import BScroll from 'better-scroll';
 // 引入组件
@@ -123,6 +126,9 @@ export default {
     };
   },
   computed: {
+    // ...mapState({
+    //   goods: 'goodsList'
+    // }),
     currentIndex() {
       for (let i = 0; i < this.listHeight.length; i++) {
         const h1 = this.listHeight[i];
@@ -135,18 +141,18 @@ export default {
       }
       // 如果listHeight为空就返回0。即currentIndex为0
       return 0;
-    },
-    selectGoods() {
-      const foods = [];
-      this.goods.forEach((good) => {
-        good.foods.forEach((food) => {
-          if (food.count) {
-            foods.push(food);
-          }
-        });
-      });
-      return foods;
     }
+    // selectGoods() {
+    //   const foods = [];
+    //   this.goods.forEach((good) => {
+    //     good.foods.forEach((food) => {
+    //       if (food.count) {
+    //         foods.push(food);
+    //       }
+    //     });
+    //   });
+    //   return foods;
+    // }
   },
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
@@ -168,14 +174,8 @@ export default {
       }
     });
   },
-  // mounted() {
-  //   // vue更新数据是异步的，实际上是在$nextTick中执行DOM的更新
-  //   this.$nextTick(() => {
-  //     // 此时才能正确计算高度
-  //     this._initScroll();
-  //   });
-  // },
   methods: {
+    // ...mapActions(['getGoodsData']),
     selectGood(food, event) {
       if (!event._constructed) {
         return;
@@ -222,7 +222,7 @@ export default {
     _calHeight() {
       // console.log(this.$refs['goods-item-hook']);
       const goodList = this.$refs['goods-item-hook'];
-      // console.log(goodList);
+      console.log(goodList);
       let height = 0;
       this.listHeight.push(height);
       for (let i = 0; i < goodList.length; i++) {

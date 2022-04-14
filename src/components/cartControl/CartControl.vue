@@ -42,13 +42,22 @@ export default {
       // 如果想要实现这个功能需要用vue 的一个接口
       if (!this.food.count) {
         // 点击“+”按钮后，如果food中还没有count，那就添加一个count属性，并赋值为1
-        // this.$root即Vue根组件，其中有一个$set的API
-        this.$root.$set(this.food, 'count', 1);
+        // this.$root即Vue根组件，其中有一个$set的API(Vue.$set是将set()方法绑定在Vue上)
+        // 但是不需要查找根组件！
+        // 只需要直接使用 this.$set (this.$set是将set()方法绑定在Vue的原型上，但实际上与Vue.$set原理是一样的)
+        // console.log(this);
+        this.$set(this.food, 'count', 1);
         // console.log(this.$root);
         console.log(this.food.count);
+
+        // // 更新vuex中的 cart_goods
+        this.$store.commit('addGoodToCart', this.food);
       } else {
         // 如果已经存在count属性，则直接 ++
         this.food.count++;
+        // // 更新vuex中的 cart_goods 对应food的数量
+        // console.log(this.food);
+        this.$store.commit('updateGoodCount', this.food);
       }
     },
     substractCart(event) {
@@ -56,6 +65,9 @@ export default {
         return;
       }
       this.food.count--;
+      // // 更新vuex中的 cart_goods 对应food的数量
+      // console.log(this.food);
+      this.$store.commit('updateGoodCount', this.food);
     }
   }
 };
@@ -65,12 +77,12 @@ export default {
 #cart-control
   font-size 0
   .move-enter-active, .move-leave-active
-    opacity: 1
-    transform: translate3d(0, 0, 0)
-    transition: all 0.4s
+    opacity 1
+    transform translate3d(0, 0, 0)
+    transition all 0.4s
   .move-enter, .move-leave-active
     opacity 0
-    transform: translate3d(24px, 0, 0)
+    transform translate3d(24px, 0, 0)
   .cart-substract, .cart-add
     display inline-block
     padding 6px

@@ -2,7 +2,7 @@
   <div id="app">
     <!--  不可以使用header作为组件标签名
       因为h5存在原生标签header标签，可能会混淆导致报错（解析时认为已经注册的组件没有使用时会报错） -->
-    <Header :sellerInfo = 'seller'></Header>
+    <Header :sellerInfo='seller'></Header>
     <!--
       v-bind:属性名="属性值"
         缩写为 :属性名="属性值"
@@ -37,9 +37,11 @@
         将组件的状态都缓存到内存里
         切换router时，如果组件已经保存在内存，就直接从内存中恢复
        -->
-      <keep-alive>
+       <keep-alive>
         <!-- 将 seller传入 -->
-        <router-view :seller="seller" v-if="$route.meta.keepAlive"></router-view>
+        <router-view
+          :seller="seller"
+        ></router-view>
       </keep-alive>
     </div>
   </div>
@@ -77,7 +79,8 @@ export default {
       }
     });
   },
-  methods: {}
+  methods: {
+  }
 };
 </script>
 
