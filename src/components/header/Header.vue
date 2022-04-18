@@ -3,7 +3,6 @@
       <div class="content-wrapper">
         <div class="avatar">
           <img width="64" height="64" :src="sellerInfo.avatar">
-          <!-- 没有 :alt="sellerInfo.name" 这个用法？ -->
         </div>
         <div class="content">
           <div class="title">
@@ -40,7 +39,6 @@
       </div>
       <transition name="fade">
         <div class="seller-detail" v-show="showSellerDetailShow">
-        <!-- <div class="seller-detail" v-show="showSellerDetailShow" transition="fade"> -->
           <div class="seller-detail-wrapper clearfix">
             <div class="seller-detail-wrapper-main">
               <h1 class="seller-name"> {{sellerInfo.name}} </h1>

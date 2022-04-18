@@ -168,13 +168,9 @@ export default {
       console.log(this.selectType);
     },
     addGood(event) {
-      // if (!event._constructed) {
-      //   return;
-      // }
       if (!event._constructed) {
         return;
       }
-      // 55555555一晚上！！！一晚上结果是ref加错了位置！！！！！哭死了！！！！
       // console.log('click');
       if (!this.good.count) {
         this.$set(this.good, 'count', 1);

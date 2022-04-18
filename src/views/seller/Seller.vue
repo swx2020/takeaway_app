@@ -74,7 +74,6 @@
 
 <script>
 import { mapState } from 'vuex';
-// import { saveToLocal, loadFromLocal } from 'assets/js/store.js';
 import BScroll from '@better-scroll/core';
 import Split from '../../components/split/Split.vue';
 import Star from '../../components/star/Star.vue';
@@ -91,10 +90,6 @@ export default {
   },
   data() {
     return {
-      // 立即执行函数
-      // favorite: (() => {
-      //   return loadFromLocal(this.seller.id, 'favorite', false);
-      // })()
     };
   },
   computed: {
@@ -137,8 +132,6 @@ export default {
       if (!event._constructed) {
         return;
       }
-      // this.favorite = !this.favorite;
-      // saveToLocal(this.seller.id, 'favorite', this.favorite);
 
       // 调用mutations中的方法，更改收藏状态
       this.$store.commit('updateCollection');

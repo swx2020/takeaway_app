@@ -14,7 +14,6 @@
           @click="toggleGoods(index, $event)"
         >
           <!-- better-scroll 默认会阻止【移动端】浏览器的原生 click 事件!需手动设置click:true ；不会阻止PC端-->
-          <!-- :class="{'current': currentIndex === index}" 三目运算符？？？符合条件就是 存在类名current -->
           <span class="text mobile_border-1px">
             <span
               class="icon"
@@ -91,7 +90,6 @@
 </template>
 
 <script>
-// import { mapState, mapActions } from 'vuex';
 // 引入 better-scroll
 import BScroll from 'better-scroll';
 // 引入组件
@@ -126,9 +124,6 @@ export default {
     };
   },
   computed: {
-    // ...mapState({
-    //   goods: 'goodsList'
-    // }),
     currentIndex() {
       for (let i = 0; i < this.listHeight.length; i++) {
         const h1 = this.listHeight[i];
@@ -142,17 +137,6 @@ export default {
       // 如果listHeight为空就返回0。即currentIndex为0
       return 0;
     }
-    // selectGoods() {
-    //   const foods = [];
-    //   this.goods.forEach((good) => {
-    //     good.foods.forEach((food) => {
-    //       if (food.count) {
-    //         foods.push(food);
-    //       }
-    //     });
-    //   });
-    //   return foods;
-    // }
   },
   created() {
     this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
@@ -175,7 +159,6 @@ export default {
     });
   },
   methods: {
-    // ...mapActions(['getGoodsData']),
     selectGood(food, event) {
       if (!event._constructed) {
         return;
@@ -198,9 +181,6 @@ export default {
       const el = goodList[index];
       // 调用better-scroll的接口scrollToElement()
       this.goodsScroll.scrollToElement(el, 300);
-      // 第一次点击了精选热菜这个导航栏，然后计算对应的li列表的位置并滚动到对应位置，那下次再次点击到这个导航栏时。还要计算吗
-      // 如果需要的话，是不是可以存储起来，下次使用的时候直接使用存储起来的数据
-      // 初步想法：每次点击并滚动后，将index与el对应的高度存储在一个对象中（键值对），下次再次点击相同的导航栏，就使用对象中的数据
     },
     _initScroll() {
       this.menuScroll = new BScroll(this.$refs.menu, {

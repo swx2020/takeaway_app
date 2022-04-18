@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import { urlParse } from 'assets/js/util.js';
 import Header from 'components/header/Header.vue';
 
 const ERR_OK = 0;
@@ -57,12 +56,7 @@ export default {
   // 由于组件是可以被复用的，如果data是一个对象，会导致修改一个组件时，另一个组件也会被修改；而函数则不会
   data() {
     return {
-      seller: {
-        id: (() => {
-          const queryParam = urlParse();
-          return queryParam.id;
-        })()
-      }
+      seller: {}
     };
   },
   components: {
