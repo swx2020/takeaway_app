@@ -1,13 +1,16 @@
 # takeaway_app
-
 ## Project setup
 ```
-npm install
+1、npm install
+
+
+2、node server.js
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+新建终端
+3、npm run serve
 ```
 
 ### Compiles and minifies for production
